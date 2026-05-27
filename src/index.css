@@ -285,6 +285,12 @@ input, textarea { font-family: inherit; }
   50%      { transform: translateY(6px); }
 }
 
+/* mobile: centre everything, give abbr more room */
+@media (max-width: 767px) {
+  .intro3d__ui   { padding: 72px 16px 24px; }
+  .intro3d__top  { text-align: center; }
+  .intro3d__abbr { font-size: clamp(72px, 28vw, 160px); }
+}
 @media (min-width: 768px)  { .intro3d__ui { padding: 80px 32px 48px; } }
 @media (min-width: 1280px) { .intro3d__ui { padding: 80px clamp(32px,5vw,80px) 56px; } }
 

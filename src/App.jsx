@@ -204,101 +204,150 @@ const CATS = [
 
 // ── 3D Objects per category ──────────────────────────────────────────────────
 
-function CatObjects({ catIdx, color }) {
+function CatObjects({ catIdx, color, xs = 1, os = 1 }) {
   const m = { color, emissive: color, emissiveIntensity: 0.28, metalness: 0.72, roughness: 0.14 }
 
-  if (catIdx === 0) { // IT — torus (@), code bracket, wireframe box, dots
+  if (catIdx === 0) { // IT — laptop, curly-brace, wireframe globe, data-dots
     return (
       <>
-        <Float speed={1.2} floatIntensity={0.9} rotationIntensity={0.5} position={[3.5, 0.3, -0.8]}>
-          <mesh><torusGeometry args={[0.88, 0.22, 18, 52]} /><meshStandardMaterial {...m} /></mesh>
-        </Float>
-        <Float speed={0.85} floatIntensity={0.6} position={[-4.2, 0.5, 0]}>
-          <group>
-            <mesh><boxGeometry args={[0.15, 2.4, 0.15]} /><meshStandardMaterial {...m} /></mesh>
-            <mesh position={[0.33, 1.05, 0]} rotation={[0, 0, 0.28]}><boxGeometry args={[0.72, 0.14, 0.14]} /><meshStandardMaterial {...m} /></mesh>
-            <mesh position={[0.33, -1.05, 0]} rotation={[0, 0, -0.28]}><boxGeometry args={[0.72, 0.14, 0.14]} /><meshStandardMaterial {...m} /></mesh>
+        {/* Laptop */}
+        <Float speed={0.7} floatIntensity={0.6} rotationIntensity={0.35} position={[3.8 * xs, 0.6, -0.5]}>
+          <group scale={1.2 * os} rotation={[0.08, -0.3, 0]}>
+            <mesh position={[0, 0.62, 0]}><boxGeometry args={[1.6, 1.1, 0.07]} /><meshStandardMaterial {...m} /></mesh>
+            <mesh position={[0, 0.62, 0.042]}><boxGeometry args={[1.28, 0.88, 0.01]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.1} roughness={0.9} /></mesh>
+            <mesh position={[0, 0.03, 0.52]} rotation={[-1.42, 0, 0]}><boxGeometry args={[1.6, 0.07, 1.05]} /><meshStandardMaterial {...m} /></mesh>
           </group>
         </Float>
-        <Float speed={1.4} floatIntensity={0.7} rotationIntensity={1.3} position={[-2.5, -1.8, 0.5]}>
-          <mesh><boxGeometry args={[0.72, 0.72, 0.72]} /><meshStandardMaterial {...m} wireframe /></mesh>
+        {/* Curly brace { */}
+        <Float speed={0.9} floatIntensity={0.65} position={[-3.8 * xs, 0.5, 0]}>
+          <group scale={os}>
+            <mesh position={[0.18, 0, 0]}><boxGeometry args={[0.13, 2.6, 0.13]} /><meshStandardMaterial {...m} /></mesh>
+            <mesh position={[-0.08, 0.88, 0]}><boxGeometry args={[0.42, 0.13, 0.13]} /><meshStandardMaterial {...m} /></mesh>
+            <mesh position={[-0.08, -0.88, 0]}><boxGeometry args={[0.42, 0.13, 0.13]} /><meshStandardMaterial {...m} /></mesh>
+            <mesh position={[-0.02, 0, 0]}><boxGeometry args={[0.32, 0.13, 0.13]} /><meshStandardMaterial {...m} /></mesh>
+          </group>
         </Float>
-        {[[-2.5, 2.8, 0.4], [4.2, -1.5, -0.3], [2.2, 3.2, -1.1], [-1, -2.6, 0.8], [5.2, 1.5, -0.5]].map(([x, y, z], i) => (
-          <Float key={i} speed={0.7 + i * 0.15} floatIntensity={1.1} position={[x, y, z]}>
-            <mesh><sphereGeometry args={[0.1 + (i % 3) * 0.04, 10, 10]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.65} /></mesh>
+        {/* Wireframe network globe */}
+        <Float speed={1.3} floatIntensity={0.65} rotationIntensity={0.9} position={[-2.4 * xs, -2.3, 0.4]}>
+          <mesh scale={0.9 * os}><sphereGeometry args={[0.72, 8, 8]} /><meshStandardMaterial {...m} wireframe /></mesh>
+        </Float>
+        {/* Data-node dots */}
+        {[[-2.8, 2.9, 0.4], [4.6, -1.8, -0.3], [2.4, 3.4, -1.0], [5.5, 1.6, -0.4]].map(([x, y, z], i) => (
+          <Float key={i} speed={0.7 + i * 0.15} floatIntensity={1.1} position={[x * xs, y, z]}>
+            <mesh scale={os}><sphereGeometry args={[0.11 + (i % 3) * 0.05, 10, 10]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.7} /></mesh>
           </Float>
         ))}
       </>
     )
   }
 
-  if (catIdx === 1) { // Дизайн — icosahedron, brush cone, palette torus, tilted planes
+  if (catIdx === 1) { // Дизайн — paintbrush, magnifying glass, diamond gem, blobs
     return (
       <>
-        <Float speed={1.0} floatIntensity={0.85} rotationIntensity={0.9} position={[3.8, 0.2, -0.6]}>
-          <mesh><icosahedronGeometry args={[1.1, 0]} /><meshStandardMaterial {...m} flatShading /></mesh>
+        {/* Paintbrush */}
+        <Float speed={0.85} floatIntensity={0.7} rotationIntensity={0.3} position={[3.8 * xs, 0.6, -0.3]}>
+          <group scale={1.15 * os} rotation={[0, 0.25, -0.65]}>
+            <mesh><cylinderGeometry args={[0.1, 0.13, 2.5, 8]} /><meshStandardMaterial {...m} /></mesh>
+            <mesh position={[0, -1.12, 0]}><cylinderGeometry args={[0.15, 0.15, 0.24, 8]} /><meshStandardMaterial color="#aaaaaa" metalness={0.9} roughness={0.1} /></mesh>
+            <mesh position={[0, -1.55, 0]}><coneGeometry args={[0.14, 0.62, 8]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.38} roughness={0.45} /></mesh>
+          </group>
         </Float>
-        <Float speed={1.3} floatIntensity={0.65} rotationIntensity={0.45} position={[-3.8, 0.8, 0.2]}>
-          <mesh rotation={[0, 0, Math.PI]}><coneGeometry args={[0.28, 2.2, 8]} /><meshStandardMaterial {...m} /></mesh>
-        </Float>
-        <Float speed={0.9} floatIntensity={0.9} rotationIntensity={0.65} position={[4.8, -1.6, -0.4]}>
-          <mesh><torusGeometry args={[0.62, 0.17, 12, 44]} /><meshStandardMaterial {...m} /></mesh>
-        </Float>
-        {[[-2.8, -1.9, 0.1], [2.0, 2.8, -0.8], [-3.5, 2.4, 0.4]].map(([x, y, z], i) => (
-          <Float key={i} speed={0.8 + i * 0.22} floatIntensity={0.65} rotationIntensity={0.5} position={[x, y, z]}>
-            <mesh rotation={[0.5 + i * 0.3, 0.3 + i * 0.25, 0.2 * i]}>
-              <planeGeometry args={[0.9, 0.9]} />
-              <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.18} side={2} transparent opacity={0.75} />
+        {/* Magnifying glass */}
+        <Float speed={1.1} floatIntensity={0.9} rotationIntensity={0.45} position={[-3.8 * xs, 0.3, 0]}>
+          <group scale={1.3 * os} rotation={[0, 0, 0.55]}>
+            <mesh><torusGeometry args={[0.6, 0.1, 12, 36]} /><meshStandardMaterial {...m} /></mesh>
+            <mesh position={[0.52, -0.55, 0]} rotation={[0, 0, -Math.PI / 4]}>
+              <cylinderGeometry args={[0.07, 0.07, 0.95, 8]} />
+              <meshStandardMaterial {...m} />
             </mesh>
+          </group>
+        </Float>
+        {/* Diamond gem */}
+        <Float speed={1.0} floatIntensity={0.85} rotationIntensity={0.9} position={[5.0 * xs, -1.8, -0.5]}>
+          <mesh scale={0.95 * os}><octahedronGeometry args={[0.88, 0]} /><meshStandardMaterial {...m} flatShading /></mesh>
+        </Float>
+        {/* Color blobs */}
+        {[[-2.5, -2.4, 0.2], [2.2, 3.2, -0.8], [-3.8, 2.6, 0.5]].map(([x, y, z], i) => (
+          <Float key={i} speed={0.8 + i * 0.22} floatIntensity={0.9} position={[x * xs, y, z]}>
+            <mesh scale={os}><sphereGeometry args={[0.24 + i * 0.07, 12, 12]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.4} roughness={0.5} /></mesh>
           </Float>
         ))}
       </>
     )
   }
 
-  if (catIdx === 2) { // SMM — phone box, bar chart cylinders, notification spheres
+  if (catIdx === 2) { // SMM — megaphone, smartphone, notification dots
     return (
       <>
-        <Float speed={1.2} floatIntensity={0.85} rotationIntensity={0.3} position={[-3.5, 0, 0]}>
-          <mesh rotation={[0, 0.4, 0.1]}><boxGeometry args={[0.58, 1.16, 0.09]} /><meshStandardMaterial {...m} /></mesh>
+        {/* Megaphone */}
+        <Float speed={0.85} floatIntensity={0.75} rotationIntensity={0.3} position={[3.6 * xs, 0.3, -0.4]}>
+          <group scale={os} rotation={[0, 0, -0.38]}>
+            <mesh><cylinderGeometry args={[0.85, 0.28, 1.4, 14]} /><meshStandardMaterial {...m} /></mesh>
+            <mesh position={[0, 0.8, 0]}><torusGeometry args={[0.87, 0.09, 8, 28]} /><meshStandardMaterial {...m} /></mesh>
+            <mesh position={[0, 1.35, 0]}><torusGeometry args={[1.12, 0.045, 6, 24]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.55} transparent opacity={0.65} /></mesh>
+            <mesh position={[0, 1.82, 0]}><torusGeometry args={[1.48, 0.032, 6, 24]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.45} transparent opacity={0.42} /></mesh>
+          </group>
         </Float>
-        {[[2.0, -0.5, 0.3], [2.9, 0.05, 0.3], [3.8, 0.65, 0.3]].map(([x, y, z], i) => (
-          <Float key={i} speed={0.7 + i * 0.2} floatIntensity={0.5} position={[x, y, z]}>
-            <mesh><cylinderGeometry args={[0.22, 0.22, 0.82 + i * 0.65, 12]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.22 + i * 0.05} metalness={0.6} roughness={0.2} /></mesh>
-          </Float>
-        ))}
-        {[[-2, 2.6, 0.4], [4.6, 2.2, -0.5], [5.2, -1.8, 0.3], [-4.5, -1.6, 0.5], [-1, 3.2, -0.5]].map(([x, y, z], i) => (
-          <Float key={i} speed={0.9 + i * 0.18} floatIntensity={1.25} position={[x, y, z]}>
-            <mesh><sphereGeometry args={[0.16 + (i % 3) * 0.06, 12, 12]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.55} /></mesh>
+        {/* Smartphone */}
+        <Float speed={1.1} floatIntensity={0.8} rotationIntensity={0.3} position={[-3.6 * xs, 0.1, 0]}>
+          <group scale={os} rotation={[0, 0.35, 0.1]}>
+            <mesh><boxGeometry args={[0.66, 1.32, 0.09]} /><meshStandardMaterial {...m} /></mesh>
+            <mesh position={[0, 0, 0.05]}><boxGeometry args={[0.52, 1.1, 0.01]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.12} roughness={0.9} /></mesh>
+            <mesh position={[0, -0.56, 0.055]}><cylinderGeometry args={[0.07, 0.07, 0.07, 12]} /><meshStandardMaterial color="#555" metalness={0.8} roughness={0.2} /></mesh>
+          </group>
+        </Float>
+        {/* Notification spheres */}
+        {[[-2.2, 2.9, 0.5], [4.9, 2.4, -0.5], [5.5, -1.8, 0.3], [-4.8, -1.8, 0.5], [-1.2, 3.4, -0.4]].map(([x, y, z], i) => (
+          <Float key={i} speed={0.85 + i * 0.18} floatIntensity={1.3} position={[x * xs, y, z]}>
+            <mesh scale={os}><sphereGeometry args={[0.17 + (i % 3) * 0.07, 12, 12]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.55} /></mesh>
           </Float>
         ))}
       </>
     )
   }
 
-  // Motion Design — concentric rings, film-frame boxes, capsule, dots
+  // Motion Design — play-button ring, camera body, film frames, capsule
   return (
     <>
-      <Float speed={0.8} floatIntensity={0.65} rotationIntensity={0.55} position={[3.5, 0.2, -0.5]}>
-        <group>
-          <mesh><torusGeometry args={[1.12, 0.12, 12, 64]} /><meshStandardMaterial {...m} /></mesh>
-          <mesh><torusGeometry args={[0.72, 0.09, 10, 48]} /><meshStandardMaterial {...m} /></mesh>
+      {/* Play button ring + triangle */}
+      <Float speed={0.75} floatIntensity={0.65} rotationIntensity={0.35} position={[3.8 * xs, 0.3, -0.4]}>
+        <group scale={1.1 * os}>
+          <mesh><torusGeometry args={[1.12, 0.1, 12, 60]} /><meshStandardMaterial {...m} /></mesh>
+          <mesh position={[0.15, 0, 0]} rotation={[Math.PI / 2, 0, Math.PI / 6]}>
+            <cylinderGeometry args={[0, 0.65, 0.22, 3]} />
+            <meshStandardMaterial {...m} />
+          </mesh>
         </group>
       </Float>
-      {[[-3.6, 0.4, 0.1], [-4.8, -0.9, 0.4], [-2.6, 1.9, -0.4]].map(([x, y, z], i) => (
-        <Float key={i} speed={0.9 + i * 0.28} floatIntensity={0.7} rotationIntensity={1.3} position={[x, y, z]}>
-          <mesh rotation={[0.3 * i, 0.4 * i + 0.2, 0.2 * i + 0.1]}>
-            <boxGeometry args={[1.0, 0.7, 0.06]} />
+      {/* Camera body */}
+      <Float speed={1.0} floatIntensity={0.75} rotationIntensity={0.4} position={[-3.8 * xs, 0.3, 0.1]}>
+        <group scale={os} rotation={[0, 0.3, 0]}>
+          <mesh><boxGeometry args={[1.5, 0.96, 0.65]} /><meshStandardMaterial {...m} /></mesh>
+          <mesh position={[0.5, 0.12, 0.37]} rotation={[Math.PI / 2, 0, 0]}>
+            <cylinderGeometry args={[0.28, 0.32, 0.38, 18]} />
+            <meshStandardMaterial color="#1a1a1a" metalness={0.9} roughness={0.1} />
+          </mesh>
+          <mesh position={[0.5, 0.12, 0.55]}><circleGeometry args={[0.21, 18]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.35} transparent opacity={0.6} /></mesh>
+          <mesh position={[-0.35, 0.6, 0]}><boxGeometry args={[0.46, 0.22, 0.46]} /><meshStandardMaterial {...m} /></mesh>
+        </group>
+      </Float>
+      {/* Film frames */}
+      {[[-2.4, -2.4, 0.2], [2.0, 3.0, -0.8]].map(([x, y, z], i) => (
+        <Float key={i} speed={0.9 + i * 0.3} floatIntensity={0.7} rotationIntensity={1.3} position={[x * xs, y, z]}>
+          <mesh scale={os} rotation={[0.3 * i, 0.4 * (i + 1), 0.2 * i]}>
+            <boxGeometry args={[1.12, 0.76, 0.06]} />
             <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.18} metalness={0.5} roughness={0.3} />
           </mesh>
         </Float>
       ))}
-      <Float speed={1.3} floatIntensity={0.9} rotationIntensity={0.45} position={[4.8, -1.5, -0.3]}>
-        <mesh rotation={[0, 0, Math.PI / 4]}><capsuleGeometry args={[0.2, 0.95, 8, 18]} /><meshStandardMaterial {...m} /></mesh>
+      {/* Motion capsule */}
+      <Float speed={1.3} floatIntensity={0.9} rotationIntensity={0.5} position={[5.2 * xs, -1.8, -0.3]}>
+        <mesh scale={os} rotation={[0, 0, Math.PI / 4]}><capsuleGeometry args={[0.18, 1.1, 8, 18]} /><meshStandardMaterial {...m} /></mesh>
       </Float>
-      {[[-2.2, -2.6, 0.6], [1.5, 3.2, -0.8], [-1.2, 2.6, 0.4]].map(([x, y, z], i) => (
-        <Float key={i} speed={0.75 + i * 0.28} floatIntensity={1.3} position={[x, y, z]}>
-          <mesh><sphereGeometry args={[0.12 + i * 0.04, 10, 10]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.65} /></mesh>
+      {/* Glow dots */}
+      {[[-1.8, 3.0, 0.4], [5.0, 1.0, -0.5]].map(([x, y, z], i) => (
+        <Float key={i + 10} speed={0.7 + i * 0.3} floatIntensity={1.3} position={[x * xs, y, z]}>
+          <mesh scale={os}><sphereGeometry args={[0.15 + i * 0.05, 10, 10]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.65} /></mesh>
         </Float>
       ))}
     </>
@@ -307,7 +356,7 @@ function CatObjects({ catIdx, color }) {
 
 // ── 3D Scene ─────────────────────────────────────────────────────────────────
 
-function IntroScene({ activeRef }) {
+function IntroScene({ activeRef, isMobile }) {
   const groupRefs   = useRef([])
   const prevIdx     = useRef(-1)
   const initialized = useRef(false)
@@ -349,7 +398,7 @@ function IntroScene({ activeRef }) {
       <pointLight position={[0, -8, 4]}  intensity={1.5} color="#0C0C1D" />
       {CATS.map((cat, i) => (
         <group key={i} ref={el => groupRefs.current[i] = el}>
-          <CatObjects catIdx={i} color={cat.color} />
+          <CatObjects catIdx={i} color={cat.color} xs={isMobile ? 0.55 : 1} os={isMobile ? 0.82 : 1} />
         </group>
       ))}
     </>
@@ -419,7 +468,7 @@ function Intro() {
           dpr={isMobile ? [1, 1.5] : [1, 2]}
         >
           <Suspense fallback={null}>
-            <IntroScene activeRef={activeRef} />
+            <IntroScene activeRef={activeRef} isMobile={isMobile} />
           </Suspense>
         </Canvas>
       </div>
@@ -884,6 +933,7 @@ const Courses = memo(function Courses() {
 
 // ─── Course Showcase (full-screen bg) ─────────────────────────────────────────
 
+// eslint-disable-next-line no-unused-vars
 const Showcase = memo(function Showcase() {
   const [active, setActive]   = useState(2)   // Motion Design first
   const activeRef             = useRef(2)
@@ -1230,7 +1280,7 @@ export default function App() {
         <Marquee />
         <Stats />
         <Courses />
-        <Showcase />
+        {/* т<Showcase /> */}
         <Process />
         <Talents />
         <CTA />
