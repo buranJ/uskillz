@@ -193,6 +193,284 @@ function Nav() {
   )
 }
 
+// ─── Intro — scroll-driven 3D categories ─────────────────────────────────────
+
+const CATS = [
+  { abbr: 'IT',      label: 'Разработка',    color: '#C8F400', shadow: '#3a5200', courses: ['JavaScript', 'Python'] },
+  { abbr: 'ДИЗАЙН',  label: 'Дизайн',        color: '#FF2D00', shadow: '#5c1200', courses: ['Digital Art', 'UX/UI Design', 'Motion Design'] },
+  { abbr: 'SMM',     label: 'Маркетинг',     color: '#C8F400', shadow: '#3a5200', courses: ['SMM', 'SMM + Фото'] },
+  { abbr: 'MOTION',  label: 'Motion Design', color: '#FF2D00', shadow: '#5c1200', courses: ['Motion Design', 'Digital Art'] },
+]
+
+// ── 3D Objects per category ──────────────────────────────────────────────────
+
+function CatObjects({ catIdx, color }) {
+  const m = { color, emissive: color, emissiveIntensity: 0.28, metalness: 0.72, roughness: 0.14 }
+
+  if (catIdx === 0) { // IT — torus (@), code bracket, wireframe box, dots
+    return (
+      <>
+        <Float speed={1.2} floatIntensity={0.9} rotationIntensity={0.5} position={[3.5, 0.3, -0.8]}>
+          <mesh><torusGeometry args={[0.88, 0.22, 18, 52]} /><meshStandardMaterial {...m} /></mesh>
+        </Float>
+        <Float speed={0.85} floatIntensity={0.6} position={[-4.2, 0.5, 0]}>
+          <group>
+            <mesh><boxGeometry args={[0.15, 2.4, 0.15]} /><meshStandardMaterial {...m} /></mesh>
+            <mesh position={[0.33, 1.05, 0]} rotation={[0, 0, 0.28]}><boxGeometry args={[0.72, 0.14, 0.14]} /><meshStandardMaterial {...m} /></mesh>
+            <mesh position={[0.33, -1.05, 0]} rotation={[0, 0, -0.28]}><boxGeometry args={[0.72, 0.14, 0.14]} /><meshStandardMaterial {...m} /></mesh>
+          </group>
+        </Float>
+        <Float speed={1.4} floatIntensity={0.7} rotationIntensity={1.3} position={[-2.5, -1.8, 0.5]}>
+          <mesh><boxGeometry args={[0.72, 0.72, 0.72]} /><meshStandardMaterial {...m} wireframe /></mesh>
+        </Float>
+        {[[-2.5, 2.8, 0.4], [4.2, -1.5, -0.3], [2.2, 3.2, -1.1], [-1, -2.6, 0.8], [5.2, 1.5, -0.5]].map(([x, y, z], i) => (
+          <Float key={i} speed={0.7 + i * 0.15} floatIntensity={1.1} position={[x, y, z]}>
+            <mesh><sphereGeometry args={[0.1 + (i % 3) * 0.04, 10, 10]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.65} /></mesh>
+          </Float>
+        ))}
+      </>
+    )
+  }
+
+  if (catIdx === 1) { // Дизайн — icosahedron, brush cone, palette torus, tilted planes
+    return (
+      <>
+        <Float speed={1.0} floatIntensity={0.85} rotationIntensity={0.9} position={[3.8, 0.2, -0.6]}>
+          <mesh><icosahedronGeometry args={[1.1, 0]} /><meshStandardMaterial {...m} flatShading /></mesh>
+        </Float>
+        <Float speed={1.3} floatIntensity={0.65} rotationIntensity={0.45} position={[-3.8, 0.8, 0.2]}>
+          <mesh rotation={[0, 0, Math.PI]}><coneGeometry args={[0.28, 2.2, 8]} /><meshStandardMaterial {...m} /></mesh>
+        </Float>
+        <Float speed={0.9} floatIntensity={0.9} rotationIntensity={0.65} position={[4.8, -1.6, -0.4]}>
+          <mesh><torusGeometry args={[0.62, 0.17, 12, 44]} /><meshStandardMaterial {...m} /></mesh>
+        </Float>
+        {[[-2.8, -1.9, 0.1], [2.0, 2.8, -0.8], [-3.5, 2.4, 0.4]].map(([x, y, z], i) => (
+          <Float key={i} speed={0.8 + i * 0.22} floatIntensity={0.65} rotationIntensity={0.5} position={[x, y, z]}>
+            <mesh rotation={[0.5 + i * 0.3, 0.3 + i * 0.25, 0.2 * i]}>
+              <planeGeometry args={[0.9, 0.9]} />
+              <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.18} side={2} transparent opacity={0.75} />
+            </mesh>
+          </Float>
+        ))}
+      </>
+    )
+  }
+
+  if (catIdx === 2) { // SMM — phone box, bar chart cylinders, notification spheres
+    return (
+      <>
+        <Float speed={1.2} floatIntensity={0.85} rotationIntensity={0.3} position={[-3.5, 0, 0]}>
+          <mesh rotation={[0, 0.4, 0.1]}><boxGeometry args={[0.58, 1.16, 0.09]} /><meshStandardMaterial {...m} /></mesh>
+        </Float>
+        {[[2.0, -0.5, 0.3], [2.9, 0.05, 0.3], [3.8, 0.65, 0.3]].map(([x, y, z], i) => (
+          <Float key={i} speed={0.7 + i * 0.2} floatIntensity={0.5} position={[x, y, z]}>
+            <mesh><cylinderGeometry args={[0.22, 0.22, 0.82 + i * 0.65, 12]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.22 + i * 0.05} metalness={0.6} roughness={0.2} /></mesh>
+          </Float>
+        ))}
+        {[[-2, 2.6, 0.4], [4.6, 2.2, -0.5], [5.2, -1.8, 0.3], [-4.5, -1.6, 0.5], [-1, 3.2, -0.5]].map(([x, y, z], i) => (
+          <Float key={i} speed={0.9 + i * 0.18} floatIntensity={1.25} position={[x, y, z]}>
+            <mesh><sphereGeometry args={[0.16 + (i % 3) * 0.06, 12, 12]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.55} /></mesh>
+          </Float>
+        ))}
+      </>
+    )
+  }
+
+  // Motion Design — concentric rings, film-frame boxes, capsule, dots
+  return (
+    <>
+      <Float speed={0.8} floatIntensity={0.65} rotationIntensity={0.55} position={[3.5, 0.2, -0.5]}>
+        <group>
+          <mesh><torusGeometry args={[1.12, 0.12, 12, 64]} /><meshStandardMaterial {...m} /></mesh>
+          <mesh><torusGeometry args={[0.72, 0.09, 10, 48]} /><meshStandardMaterial {...m} /></mesh>
+        </group>
+      </Float>
+      {[[-3.6, 0.4, 0.1], [-4.8, -0.9, 0.4], [-2.6, 1.9, -0.4]].map(([x, y, z], i) => (
+        <Float key={i} speed={0.9 + i * 0.28} floatIntensity={0.7} rotationIntensity={1.3} position={[x, y, z]}>
+          <mesh rotation={[0.3 * i, 0.4 * i + 0.2, 0.2 * i + 0.1]}>
+            <boxGeometry args={[1.0, 0.7, 0.06]} />
+            <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.18} metalness={0.5} roughness={0.3} />
+          </mesh>
+        </Float>
+      ))}
+      <Float speed={1.3} floatIntensity={0.9} rotationIntensity={0.45} position={[4.8, -1.5, -0.3]}>
+        <mesh rotation={[0, 0, Math.PI / 4]}><capsuleGeometry args={[0.2, 0.95, 8, 18]} /><meshStandardMaterial {...m} /></mesh>
+      </Float>
+      {[[-2.2, -2.6, 0.6], [1.5, 3.2, -0.8], [-1.2, 2.6, 0.4]].map(([x, y, z], i) => (
+        <Float key={i} speed={0.75 + i * 0.28} floatIntensity={1.3} position={[x, y, z]}>
+          <mesh><sphereGeometry args={[0.12 + i * 0.04, 10, 10]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.65} /></mesh>
+        </Float>
+      ))}
+    </>
+  )
+}
+
+// ── 3D Scene ─────────────────────────────────────────────────────────────────
+
+function IntroScene({ activeRef }) {
+  const groupRefs   = useRef([])
+  const prevIdx     = useRef(-1)
+  const initialized = useRef(false)
+
+  useFrame(() => {
+    if (!initialized.current) {
+      groupRefs.current.forEach((g, i) => {
+        if (!g) return
+        g.position.y = i === 0 ? 0 : 12
+        g.scale.setScalar(i === 0 ? 1 : 0.3)
+      })
+      prevIdx.current = 0
+      initialized.current = true
+    }
+
+    const cur = activeRef.current
+    if (cur !== prevIdx.current && initialized.current && cur >= 0) {
+      const old = groupRefs.current[prevIdx.current]
+      const next = groupRefs.current[cur]
+      if (old) {
+        gsap.to(old.position, { y: -12, duration: 0.55, ease: 'power3.in', overwrite: true })
+        gsap.to(old.scale,    { x: 0.3, y: 0.3, z: 0.3, duration: 0.5, ease: 'power3.in', overwrite: true })
+      }
+      if (next) {
+        next.position.y = 12
+        next.scale.setScalar(0.4)
+        gsap.to(next.position, { y: 0, duration: 0.7, ease: 'back.out(1.2)', delay: 0.08, overwrite: true })
+        gsap.to(next.scale,    { x: 1, y: 1, z: 1, duration: 0.7, ease: 'back.out(1.4)', delay: 0.08, overwrite: true })
+      }
+      prevIdx.current = cur
+    }
+  })
+
+  return (
+    <>
+      <ambientLight intensity={0.3} />
+      <pointLight position={[5, 5, 5]}   intensity={3.2} color="#C8F400" />
+      <pointLight position={[-5, -3, 3]} intensity={2.4} color="#FF2D00" />
+      <pointLight position={[0, -8, 4]}  intensity={1.5} color="#0C0C1D" />
+      {CATS.map((cat, i) => (
+        <group key={i} ref={el => groupRefs.current[i] = el}>
+          <CatObjects catIdx={i} color={cat.color} />
+        </group>
+      ))}
+    </>
+  )
+}
+
+// ── Intro component ───────────────────────────────────────────────────────────
+
+function Intro() {
+  const isMobile   = useIsMobile()
+  const [active, setActive] = useState(0)
+  const activeRef  = useRef(0)
+  const sectionRef = useRef()
+  const textRef    = useRef()
+  const labelRef   = useRef()
+  const animating  = useRef(false)
+  const toRef      = useRef(null)
+
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+
+    const st = ScrollTrigger.create({
+      trigger: el,
+      pin: true,
+      anticipatePin: 1,
+      start: 'top top',
+      end: `+=${(CATS.length - 1) * window.innerHeight}`,
+      scrub: 0.8,
+      onUpdate(self) {
+        const idx = Math.min(CATS.length - 1, Math.floor(self.progress * CATS.length))
+        if (idx === activeRef.current || animating.current) return
+        animating.current = true
+
+        const out = (el) => el && gsap.to(el, { yPercent: -70, opacity: 0, duration: 0.22, ease: 'power3.in' })
+        out(textRef.current)
+        out(labelRef.current)
+
+        toRef.current = setTimeout(() => {
+          activeRef.current = idx
+          setActive(idx)
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            const inn = (el, d = 0) => el && gsap.fromTo(el,
+              { yPercent: 70, opacity: 0 },
+              { yPercent: 0, opacity: 1, duration: 0.35, ease: 'back.out(1.5)', delay: d,
+                onComplete: () => { animating.current = false } }
+            )
+            inn(textRef.current)
+            inn(labelRef.current, 0.06)
+          }))
+        }, 230)
+      },
+    })
+
+    return () => { st.kill(); clearTimeout(toRef.current) }
+  }, [])
+
+  const cat = CATS[active]
+
+  return (
+    <section className="intro3d" ref={sectionRef}>
+      {/* 3D canvas */}
+      <div className="intro3d__canvas">
+        <Canvas
+          camera={{ position: [0, 0, isMobile ? 7 : 8.5], fov: isMobile ? 65 : 50 }}
+          gl={{ antialias: true, alpha: true }}
+          dpr={isMobile ? [1, 1.5] : [1, 2]}
+        >
+          <Suspense fallback={null}>
+            <IntroScene activeRef={activeRef} />
+          </Suspense>
+        </Canvas>
+      </div>
+
+      {/* Radial vignette */}
+      <div className="intro3d__vig" />
+
+      {/* UI overlay */}
+      <div className="intro3d__ui">
+
+        <div className="intro3d__top">
+          <div className="intro__badge">
+            <span className="badge__dot" />
+            Выбери свою профессию
+          </div>
+        </div>
+
+        <div className="intro3d__center">
+          <div className="intro3d__clip">
+            <div
+              ref={textRef}
+              className="intro3d__abbr"
+              style={{
+                color: cat.color,
+                textShadow: `3px 3px 0 ${cat.shadow}, 6px 6px 0 ${cat.shadow}bb, 10px 10px 24px rgba(0,0,0,0.55)`,
+              }}
+            >
+              {cat.abbr}
+            </div>
+          </div>
+          <div ref={labelRef} className="intro3d__sublabel">{cat.label}</div>
+        </div>
+
+        <div className="intro3d__bottom">
+          <div className="intro3d__pips">
+            {CATS.map((c, i) => (
+              <div key={i} className={`intro3d__pip${i === active ? ' active' : ''}`}
+                style={i === active ? { background: c.color } : {}} />
+            ))}
+          </div>
+          <div className="intro3d__courses">
+            {cat.courses.map(c => <span key={c}>{c}</span>)}
+          </div>
+          <p className="intro3d__hint">↓ Скролли для переключения</p>
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
 function Hero({ mouse }) {
@@ -947,11 +1225,12 @@ export default function App() {
       <CustomCursor />
       <Nav />
       <main>
+        <Intro />
         <Hero mouse={mouse} />
         <Marquee />
         <Stats />
         <Courses />
-        {/* <Showcase /> */}
+        <Showcase />
         <Process />
         <Talents />
         <CTA />

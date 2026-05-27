@@ -209,6 +209,85 @@ input, textarea { font-family: inherit; }
   .nav { padding: 0 clamp(32px, 5vw, 80px); }
 }
 
+/* ─── Intro 3D (scroll-pinned category picker) ───────────────────────────────── */
+.intro3d {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--navy);
+}
+.intro3d__canvas {
+  position: absolute; inset: 0; z-index: 0;
+}
+.intro3d__canvas canvas { width: 100% !important; height: 100% !important; }
+
+/* soft edge vignette so text pops */
+.intro3d__vig {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 30%, rgba(12,12,29,0.62) 100%);
+}
+
+/* UI overlay — three zones: top / center / bottom */
+.intro3d__ui {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 80px 20px 36px;
+  pointer-events: none;
+}
+
+/* — centre — */
+.intro3d__center { text-align: center; }
+.intro3d__clip   { overflow: hidden; line-height: 1; }
+.intro3d__abbr {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(80px, 25vw, 240px);
+  line-height: 1; letter-spacing: -0.055em;
+  display: block;
+  will-change: transform, opacity;
+}
+.intro3d__sublabel {
+  font-family: var(--font-display);
+  font-size: clamp(14px, 2.4vw, 22px);
+  font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(245,240,228,0.45);
+  margin-top: 10px;
+  will-change: transform, opacity;
+}
+
+/* — bottom — */
+.intro3d__bottom {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.intro3d__pips { display: flex; gap: 8px; align-items: center; }
+.intro3d__pip {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(245,240,228,0.22);
+  transition: width 0.3s ease, border-radius 0.3s ease, background 0.3s ease;
+}
+.intro3d__pip.active { width: 28px; border-radius: 4px; }
+
+.intro3d__courses { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.intro3d__courses span {
+  padding: 4px 12px; border-radius: 20px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  background: rgba(245,240,228,0.07);
+  border: 1px solid rgba(245,240,228,0.14);
+  color: rgba(245,240,228,0.5);
+}
+.intro3d__hint {
+  font-size: 11px; color: rgba(245,240,228,0.28); letter-spacing: 0.1em;
+  animation: bounceDown 2s ease-in-out infinite;
+}
+@keyframes bounceDown {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+
+@media (min-width: 768px)  { .intro3d__ui { padding: 80px 32px 48px; } }
+@media (min-width: 1280px) { .intro3d__ui { padding: 80px clamp(32px,5vw,80px) 56px; } }
+
 /* ─── Hero ────────────────────────────────────────────────────────────────────── */
 .hero {
   position: relative; min-height: 100svh;
